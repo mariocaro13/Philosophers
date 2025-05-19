@@ -6,14 +6,18 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:39:49 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/05/08 13:39:52 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:51:44 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	error_exit(const char *message)
+bool	is_space(const char c)
 {
-	printf("%s\n", message);
-	exit(EXIT_FAILURE);
+	return (c == ' ' || (c >= 9 && c <= 13));
+}
+
+bool	is_digit(const char c)
+{
+	return (c >= '0' && c <= '9');
 }

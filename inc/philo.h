@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:07:06 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/05/08 13:37:40 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/05/19 22:08:44 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <pthread.h>
+# include <limits.h>
 
 # include <sys/time.h>
 
@@ -36,6 +37,9 @@
 * | |_| |  __/  _| | | | |  __/\__ \
 * |____/ \___|_| |_|_| |_|\___||___/
 */
+
+# define USAGE "Usage: ./philo number_of_philosophers time_to_die time_to_eat \
+time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
 /**
  * @brief ANSI color codes for terminal output.
@@ -69,7 +73,7 @@ typedef struct s_fork	t_fork;
 typedef struct s_fork
 {
 	t_mutex	fork; // Mutex to synchronize access to this fork.
-	int		fork_id;
+	long	fork_id;
 }	t_fork;
 
 /**
@@ -87,8 +91,8 @@ typedef struct s_fork
  */
 typedef struct s_philo
 {
-	int				id;
-	int				meals_counter;
+	long			id;
+	long			meals_counter;
 	bool			full;
 	struct timeval	last_meal_time;
 	t_fork			*left_fork;
@@ -154,5 +158,66 @@ typedef struct s_table
 * |_|   |_|  \___/ \__\___/ \__|\__, | .__/ \___||___/
 *                               |___/|_|              
 */
+
+/**
+ * @brief Checks if the given character is a whitespace character.
+ *
+ * @param c The character to check.
+ * @return true if the character is a whitespace (such as space, tab, etc.)
+ * , false otherwise.
+ */
+bool	is_space(const char c);
+
+/**
+ * @brief Checks if the given character is a digit (0-9).
+ *
+ * @param c The character to check.
+ * @return true if the character is a digit, false otherwise.
+ */
+bool	is_digit(const char c);
+
+/**
+ * @brief Converts a string to a long integer.
+ *
+ * This function parses the input string, skipping any leading whitespace,
+ * and converts the subsequent numeric characters into a long integer.
+ * Handles optional '+' or '-' sign.
+ *
+ * @param str The string to convert.
+ * @return The converted long integer value.
+ */
+long	ft_atol(const char *str);
+
+/**
+ * @brief Prints an error message to the standard error output.
+ *
+ * This function displays the specified error message, typically used to
+ * report errors encountered during program execution.
+ *
+ * @param message The error message to be printed.
+ */
+void	error_print(const char *message);
+
+/**
+ * @brief Prints the usage instructions for the program.
+ *
+ * This function displays information on how to use the program,
+ * including the expected command-line arguments and their descriptions.
+ * It is typically called when the user provides incorrect arguments
+ * or requests help.
+ */
+void	error_usage(void);
+
+/**
+ * @brief Parses the command-line input arguments and initializes the table
+ * structure.
+ *
+ * This function processes the arguments provided in argv, extracts the necessary
+ * parameters, and populates the fields of the t_table structure accordingly.
+ *
+ * @param table Pointer to the t_table structure to be initialized.
+ * @param argv  Array of strings containing the command-line arguments.
+ */
+void	parse_input(t_table *table, char **argv);
 
 #endif

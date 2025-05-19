@@ -6,15 +6,17 @@ RESET = \033[0m
 
 CC = cc
 SRCS_DIR = src
+UTILS_DIR = $(SRCS_DIR)/utils
 INCLUDE_DIR = inc
 
 INCLUDE_DIRS = -I$(INCLUDE_DIR)
 FLAGS = -Wall -Wextra -Werror
 CFLAGS = $(INCLUDE_DIRS) $(FLAGS)
 
-
 SRCS = $(SRCS_DIR)/philo.c			\
-	   $(SRCS_DIR)/utils.c			\
+	   $(UTILS_DIR)/utils.c			\
+	   $(UTILS_DIR)/atol.c			\
+	   $(SRCS_DIR)/parse.c			\
 	   $(SRCS_DIR)/init.c			\
 	   $(SRCS_DIR)/actions.c		\
 	   $(SRCS_DIR)/time.c			\
