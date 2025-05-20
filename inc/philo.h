@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:07:06 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/05/19 22:08:44 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:35:51 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,12 @@
 # include <stdbool.h>
 # include <pthread.h>
 # include <limits.h>
-
+# include <errno.h>
 # include <sys/time.h>
 
-/**
-*  ____        __ _                 
-* |  _ \  ___ / _(_)_ __   ___  ___ 
-* | | | |/ _ \ |_| | '_ \ / _ \/ __|
-* | |_| |  __/  _| | | | |  __/\__ \
-* |____/ \___|_| |_|_| |_|\___||___/
-*/
-
-# define USAGE "Usage: ./philo number_of_philosophers time_to_die time_to_eat \
-time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
-
-/**
- * @brief ANSI color codes for terminal output.
- * Usage:
- * 	printf(ANSI_RED "This text is red" ANSI_RESET);
- * 	printf(ANSI_GREEN "This text is green" ANSI_RESET);
- * Reset the color after use with ANSI_RESET.
- */
 # include "ansi_colors.h"
+# include "utils.h"
+# include "messages.h"
 
 /**
 *  _____                     _       __     
@@ -59,7 +43,6 @@ time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 *       |___/|_|                            
 */
 
-typedef pthread_mutex_t	t_mutex;
 typedef struct s_table	t_table;
 typedef struct s_philo	t_philo;
 typedef struct s_fork	t_fork;
@@ -72,8 +55,8 @@ typedef struct s_fork	t_fork;
  */
 typedef struct s_fork
 {
-	t_mutex	fork; // Mutex to synchronize access to this fork.
-	long	fork_id;
+	pthread_mutex_t	fork;
+	long			fork_id;
 }	t_fork;
 
 /**
@@ -151,6 +134,25 @@ typedef struct s_table
 }	t_table;
 
 /**
+*  _____                           
+* | ____|_ __  _   _ _ __ ___  ___ 
+* |  _| | '_ \| | | | '_ ` _ \/ __|
+* | |___| | | | |_| | | | | | \__ \
+* |_____|_| |_|\__,_|_| |_| |_|___/
+*/
+
+typedef enum e_opcode
+{
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETACH,
+}	t_opcode;
+
+/**
 *  ____            _        _                         
 * |  _ \ _ __ ___ | |_ ___ | |_ _   _ _ __   ___  ___ 
 * | |_) | '__/ _ \| __/ _ \| __| | | | '_ \ / _ \/ __|
@@ -158,35 +160,6 @@ typedef struct s_table
 * |_|   |_|  \___/ \__\___/ \__|\__, | .__/ \___||___/
 *                               |___/|_|              
 */
-
-/**
- * @brief Checks if the given character is a whitespace character.
- *
- * @param c The character to check.
- * @return true if the character is a whitespace (such as space, tab, etc.)
- * , false otherwise.
- */
-bool	is_space(const char c);
-
-/**
- * @brief Checks if the given character is a digit (0-9).
- *
- * @param c The character to check.
- * @return true if the character is a digit, false otherwise.
- */
-bool	is_digit(const char c);
-
-/**
- * @brief Converts a string to a long integer.
- *
- * This function parses the input string, skipping any leading whitespace,
- * and converts the subsequent numeric characters into a long integer.
- * Handles optional '+' or '-' sign.
- *
- * @param str The string to convert.
- * @return The converted long integer value.
- */
-long	ft_atol(const char *str);
 
 /**
  * @brief Prints an error message to the standard error output.
@@ -219,5 +192,7 @@ void	error_usage(void);
  * @param argv  Array of strings containing the command-line arguments.
  */
 void	parse_input(t_table *table, char **argv);
+
+void	init_data(t_table *table);
 
 #endif

@@ -9,19 +9,20 @@ SRCS_DIR = src
 UTILS_DIR = $(SRCS_DIR)/utils
 INCLUDE_DIR = inc
 
-INCLUDE_DIRS = -I$(INCLUDE_DIR)
+INCLUDE_DIRS = -I $(INCLUDE_DIR)
 FLAGS = -Wall -Wextra -Werror
 CFLAGS = $(INCLUDE_DIRS) $(FLAGS)
 
-SRCS = $(SRCS_DIR)/philo.c			\
-	   $(UTILS_DIR)/utils.c			\
-	   $(UTILS_DIR)/atol.c			\
-	   $(SRCS_DIR)/parse.c			\
-	   $(SRCS_DIR)/init.c			\
-	   $(SRCS_DIR)/actions.c		\
-	   $(SRCS_DIR)/time.c			\
-	   $(SRCS_DIR)/threads.c		\
-	   $(SRCS_DIR)/error_handling.c	\
+SRCS = $(SRCS_DIR)/philo.c				\
+	   $(UTILS_DIR)/utils.c				\
+	   $(UTILS_DIR)/atol.c				\
+	   $(UTILS_DIR)/safe_functions.c	\
+	   $(SRCS_DIR)/parse.c				\
+	   $(SRCS_DIR)/init.c				\
+	   $(SRCS_DIR)/actions.c			\
+	   $(SRCS_DIR)/time.c				\
+	   $(SRCS_DIR)/threads.c			\
+	   $(SRCS_DIR)/error_handling.c		\
 	   $(SRCS_DIR)/main.c
 
 OBJS = $(SRCS:.c=.o)

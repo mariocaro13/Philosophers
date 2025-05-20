@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:16:28 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/05/19 20:37:52 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:08:17 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ void	error_print(const char *message)
 void	error_usage(void)
 {
 	error_print("Invalid number of arguments.");
-	printf(ANSI_BLUE USAGE ANSI_RESET);
+	printf(ANSI_BLUE MESSAGE_USAGE ANSI_RESET);
 }
