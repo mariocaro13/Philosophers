@@ -6,14 +6,13 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:07:06 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/05/20 19:35:51 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:15:48 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <stdlib.h>
 # include <stdio.h>
 # include <stdbool.h>
 # include <pthread.h>

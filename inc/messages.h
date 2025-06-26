@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:34:36 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/06/26 19:04:44 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:11:54 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,18 @@
 # define MSG_USAGE "Usage: ./philo number_of_philosophers time_to_die time_to_eat \
 time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
-# define MSG_ERR "Error: %s\n"
+# define MSG_ERR "Error: "
 
 # define MSG_ERR_INIT "init failed."
 
 # define MSG_ERR_MEMORY_ALLOC "Memory allocation failed."
+
+# define MSG_ERR_NUM_PHILOS "Invalid number_of_philosophers."
+# define MSG_ERR_TIME_TO_DIE "Invalid time_to_die."
+# define MSG_ERR_TIME_TO_EAT "Invalid time_to_eat."
+# define MSG_ERR_TIME_TO_SLEEP "Invalid time_to_sleep."
+# define MSG_ERR_NUM_TIMES_PHILO_MUST_EAT "Invalid number_of_times_each_philosopher_\
+must_eat."
 
 // EINVAL
 # define MESSAGE_EINVAL_ATTR "The value specified by attr is invalid."

@@ -10,7 +10,7 @@ UTILS_DIR = $(SRC_DIR)/utils/
 INCLUDE_DIR = inc
 
 INCLUDE_DIRS = -I $(INCLUDE_DIR)
-FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=thread
 CFLAGS = $(INCLUDE_DIRS) $(FLAGS)
 
 SRCS = $(SRC_DIR)/init.c	\

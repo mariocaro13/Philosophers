@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:39:49 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/06/26 19:03:59 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:12:00 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*safe_malloc(size_t bytes)
 
 void	error_print(const char *message)
 {
-	printf(COLOR_RED MSG_ERR COLOR_RESET, message);
+	printf(COLOR_RED MSG_ERR COLOR_RESET "%s\n", message);
 }
 
 void	print_usage(void)
