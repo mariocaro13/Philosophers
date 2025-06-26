@@ -5,34 +5,36 @@ RED = \033[0;31m
 RESET = \033[0m
 
 CC = cc
-SRCS_DIR = src
-UTILS_DIR = $(SRCS_DIR)/utils
+SRC_DIR = src/
+UTILS_DIR = $(SRC_DIR)/utils/
 INCLUDE_DIR = inc
 
 INCLUDE_DIRS = -I $(INCLUDE_DIR)
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
 CFLAGS = $(INCLUDE_DIRS) $(FLAGS)
 
-SRCS = $(SRCS_DIR)/philo.c				\
-	   $(UTILS_DIR)/utils.c				\
-	   $(UTILS_DIR)/atol.c				\
-	   $(UTILS_DIR)/safe_functions.c	\
-	   $(SRCS_DIR)/parse.c				\
-	   $(SRCS_DIR)/init.c				\
-	   $(SRCS_DIR)/actions.c			\
-	   $(SRCS_DIR)/time.c				\
-	   $(SRCS_DIR)/threads.c			\
-	   $(SRCS_DIR)/error_handling.c		\
-	   $(SRCS_DIR)/main.c
+SRCS = $(SRC_DIR)/init.c	\
+	   $(UTILS_DIR)/utils.c	\
+	   $(UTILS_DIR)/atol.c	\
+	   $(SRC_DIR)/parse.c	\
+	   $(SRC_DIR)/philo.c	\
+	   $(SRC_DIR)/cleanup.c	\
+	   $(SRC_DIR)/main.c	\
 
 OBJS = $(SRCS:.c=.o)
+
+all: $(NAME)
+
+$(SRC_DIR)%.o: $(SRC_DIR)%.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(UTILS_DIR)%.o: $(UTILS_DIR)%.c
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
 	@echo "$(GREEN)Compiling $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)Compilation successful!$(RESET)"
-
-all: $(NAME)
 
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"

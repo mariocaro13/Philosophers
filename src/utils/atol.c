@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+#include "utils.h"
+#include <limits.h>
 
 static bool	is_negative(const char c)
 {

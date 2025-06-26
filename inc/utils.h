@@ -6,21 +6,15 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:37:00 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/05/20 19:34:24 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:59:06 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 # define UTILS_H
 
-/**
-*  ____            _        _                         
-* |  _ \ _ __ ___ | |_ ___ | |_ _   _ _ __   ___  ___ 
-* | |_) | '__/ _ \| __/ _ \| __| | | | '_ \ / _ \/ __|
-* |  __/| | | (_) | || (_) | |_| |_| | |_) |  __/\__ \
-* |_|   |_|  \___/ \__\___/ \__|\__, | .__/ \___||___/
-*                               |___/|_|              
-*/
+# include <stdlib.h>
+# include <stdbool.h>
 
 /**
  * @brief Checks if the given character is a whitespace character.
@@ -52,5 +46,9 @@ bool	is_digit(const char c);
 long	ft_atol(const char *str);
 
 void	*safe_malloc(size_t bytes);
+
+void	print_usage(void);
+
+void	error_print(const char *message);
 
 #endif

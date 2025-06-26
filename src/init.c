@@ -12,8 +12,9 @@
 
 #include "philo.h"
 
-void	init_data(t_table *table)
+int	init_table(t_table *table, t_args *args)
 {
-	table->is_simulation_ended = false;
-	table->philos = safe_malloc(sizeof(t_philo) * table->num_philos);
+	(void)table;
+	(void)args;
+	return (EXIT_FAILURE);
 }

@@ -6,27 +6,28 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:46:17 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/05/20 18:29:47 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:09:17 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include "utils.h"
+#include "messages.h"
 
 int	main(int argc, char **argv)
 {
 	t_table	table;
 
-	if (5 == argc || 6 == argc)
+	if (parse_args(argc, argv, &table.args) != EXIT_SUCCESS)
 	{
-		parse_input(&table, argv);
-		init_data(&table);//TODO: Create table and philosophers
-		//simulation_start();//TODO: 
-		//clean();//TODO: No leaks
+		print_usage();
+		return (EXIT_FAILURE);
 	}
-	else
+	if (init_table(&table, &table.args) != EXIT_SUCCESS)
 	{
-		error_usage();
-		return (1);
+		error_print(MSG_ERR_INIT);
+		return (EXIT_FAILURE);
 	}
-	return (0);
+	cleanup(&table);
+	return (EXIT_SUCCESS);
 }

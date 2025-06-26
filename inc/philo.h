@@ -13,186 +13,126 @@
 #ifndef PHILO_H
 # define PHILO_H
 
-/**
-*  ___       _                _           
-* |_ _|_ __ | | ___ _   _  __| | ___  ___ 
-*  | || '_ \| |/ __| | | |/ _` |/ _ \/ __|
-*  | || | | | | (__| |_| | (_| |  __/\__ \
-* |___|_| |_|_|\___|\__,_|\__,_|\___||___/
-*/
-
-# include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
+# include <stdio.h>
 # include <stdbool.h>
 # include <pthread.h>
-# include <limits.h>
-# include <errno.h>
 # include <sys/time.h>
 
-# include "ansi_colors.h"
-# include "utils.h"
-# include "messages.h"
-
 /**
-*  _____                     _       __     
-* |_   _|   _ _ __   ___  __| | ___ / _|___ 
-*   | || | | | '_ \ / _ \/ _` |/ _ \ |_/ __|
-*   | || |_| | |_) |  __/ (_| |  __/  _\__ \
-*   |_| \__, | .__/ \___|\__,_|\___|_| |___/
-*       |___/|_|                            
-*/
-
-typedef struct s_table	t_table;
-typedef struct s_philo	t_philo;
-typedef struct s_fork	t_fork;
-
-/**
- * @brief Represents a fork in the dining philosophers simulation.
- * 
- * @fork: Mutex for thread-safe fork access.
- * @fork_id: Unique identifier for the fork.
+ *  ____  _                   _       
+ * / ___|| |_ _ __ _   _  ___| |_ ___ 
+ * \___ \| __| '__| | | |/ __| __/ __|
+ *  ___) | |_| |  | |_| | (__| |_\__ \
+ * |____/ \__|_|   \__,_|\___|\__|___/
  */
-typedef struct s_fork
-{
-	pthread_mutex_t	fork;
-	long			fork_id;
-}	t_fork;
 
 /**
+ * @struct s_args
+ * @brief Stores the configuration arguments for the simulation.
+ *
+ * Holds the main parameters that define the simulation's behavior.
+ * @var num_philos Number of philosophers participating in the simulation.
+ * @var time_to_die Maximum time (in ms) a philosopher can go without eating
+ * before dying.
+ * @var time_to_eat Time (in ms) it takes for a philosopher to eat.
+ * @var time_to_sleep Time (in ms) a philosopher spends sleeping after eating.
+ * @var num_meal_limit Number of meals each philosopher must eat before the
+ * simulation ends (0 = no limit).
+ */
+typedef struct s_args
+{
+	int				num_philos;
+	unsigned long	time_to_die;
+	unsigned long	time_to_eat;
+	unsigned long	time_to_sleep;
+	int				num_meal_limit;
+}	t_args;
+
+/**
+ * @struct s_philo
  * @brief Represents a philosopher in the simulation.
- * 
- * struct s_philo - Represents a philosopher in the simulation.
- * @id: Unique identifier for the philosopher.
- * @meals_counter: Number of meals the philosopher has eaten.
- * @full: Boolean indicating if the philosopher is full.
- * @last_meal_time: Timestamp of the last meal eaten by the philosopher.
- * 					Tracks time since the last meal to check for starvation.
- * @left_fork: Pointer to the left fork.
- * @right_fork: Pointer to the right fork.
- * @thread_id: Thread ID associated with the philosopher.
+ *
+ * Stores the individual state of each philosopher and references to the
+ * resources they use.
+ * @var id Unique identifier for the philosopher.
+ * @var meals_counter Number of meals the philosopher has eaten.
+ * @var last_meal_ts Timestamp (in ms) of the last meal eaten.
+ * @var left_fork Pointer to the left fork (mutex).
+ * @var right_fork Pointer to the right fork (mutex).
+ * @var table Reference to the main table structure.
  */
 typedef struct s_philo
 {
-	long			id;
-	long			meals_counter;
-	bool			full;
-	struct timeval	last_meal_time;
-	t_fork			*left_fork;
-	t_fork			*right_fork;
-	pthread_t		thread_id;
-	t_table			*table;
+	int				id;
+	int				meals_counter;
+	unsigned long	last_meal_ts;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	struct s_table	*table;
 }	t_philo;
 
 /**
  * @struct s_table
- * @brief Represents the dining philosophers' table and its associated data.
- * 
- * This structure contains all the necessary information to manage the simulation
- * of the dining philosophers problem, including the number of philosophers, 
- * timing constraints, and synchronization mechanisms.
- * 
- * @var s_table::num_philos
- * Number of philosophers participating in the simulation.
- * 
- * @var s_table::time_to_die
- * Maximum time (milliseconds) a philosopher can go without eating before dying.
- * 
- * @var s_table::time_to_eat
- * Time (in milliseconds) it takes for a philosopher to eat.
- * 
- * @var s_table::time_to_sleep
- * Time (in milliseconds) a philosopher spends sleeping after eating.
- * 
- * @var s_table::num_meal_limit
- * Limit on the number of meals each philosopher must eat before simulation ends.
- * If set to 0, there is no meal limit.
- * 
- * @var s_table::start_simulation_time
- * Timestamp (in milliseconds) marking the start of the simulation.
- * 
- * @var s_table::simulation_ended
- * Boolean flag indicating whether the simulation has ended.
- * 
- * @var s_table::forks
- * Pointer to an array of t_fork structures representing the forks on the table.
- * 
- * @var s_table::philos
- * Pointer to an array of t_philo structures representing the philosophers.
+ * @brief Represents the dining table and the global state of the simulation.
+ *
+ * Manages shared resources, philosophers, and synchronization.
+ * @var args Configuration arguments.
+ * @var philos Array of philosophers.
+ * @var threads Array of philosopher threads.
+ * @var forks Array of mutexes for the forks.
+ * @var print_mutex Mutex for synchronized printing.
+ * @var end_mutex Mutex that guards access to is_simulation_ended.
+ * @var is_simulation_ended Flag indicating if the simulation has ended.
+ * @var start_simulation_ts Timestamp (in ms) marking the start of the
+ * simulation.
  */
 typedef struct s_table
 {
-	long	num_philos;
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
-	long	num_meal_limit;
-	long	start_simulation_time;
-	bool	is_simulation_ended;
-	t_fork	*forks;
-	t_philo	*philos;
+	t_args			args;
+	t_philo			*philos;
+	pthread_t		*threads;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	end_mutex;
+	bool			is_simulation_ended;
+	unsigned long	start_simulation_ts;
 }	t_table;
 
 /**
-*  _____                           
-* | ____|_ __  _   _ _ __ ___  ___ 
-* |  _| | '_ \| | | | '_ ` _ \/ __|
-* | |___| | | | |_| | | | | | \__ \
-* |_____|_| |_|\__,_|_| |_| |_|___/
-*/
-
-typedef enum e_opcode
-{
-	LOCK,
-	UNLOCK,
-	INIT,
-	DESTROY,
-	CREATE,
-	JOIN,
-	DETACH,
-}	t_opcode;
-
-/**
-*  ____            _        _                         
-* |  _ \ _ __ ___ | |_ ___ | |_ _   _ _ __   ___  ___ 
-* | |_) | '__/ _ \| __/ _ \| __| | | | '_ \ / _ \/ __|
-* |  __/| | | (_) | || (_) | |_| |_| | |_) |  __/\__ \
-* |_|   |_|  \___/ \__\___/ \__|\__, | .__/ \___||___/
-*                               |___/|_|              
-*/
-
-/**
- * @brief Prints an error message to the standard error output.
- *
- * This function displays the specified error message, typically used to
- * report errors encountered during program execution.
- *
- * @param message The error message to be printed.
+ * @brief Parses and validates the input arguments.
+ * @param argc Argument count.
+ * @param argv Argument vector.
+ * @param args Pointer to the arguments structure to fill.
+ * @return 0 on success, non-zero on error.
  */
-void	error_print(const char *message);
+int		parse_args(int argc, char **argv, t_args *args);
 
 /**
- * @brief Prints the usage instructions for the program.
- *
- * This function displays information on how to use the program,
- * including the expected command-line arguments and their descriptions.
- * It is typically called when the user provides incorrect arguments
- * or requests help.
+ * @brief Initializes the table, philosophers, and resources.
+ * @param table Pointer to the table structure.
+ * @param args Pointer to the arguments structure.
+ * @return 0 on success, non-zero on error.
  */
-void	error_usage(void);
+int		init_table(t_table *table, t_args *args);
 
 /**
- * @brief Parses the command-line input arguments and initializes the table
- * structure.
- *
- * This function processes the arguments provided in argv, extracts the necessary
- * parameters, and populates the fields of the t_table structure accordingly.
- *
- * @param table Pointer to the t_table structure to be initialized.
- * @param argv  Array of strings containing the command-line arguments.
+ * @brief Main routine for each philosopher (thread function).
+ * @param arg Pointer to the philosopher (t_philo*).
+ * @return NULL.
  */
-void	parse_input(t_table *table, char **argv);
+void	*philo_routine(void *arg);
 
-void	init_data(t_table *table);
+/**
+ * @brief Monitors the state of philosophers and detects end conditions.
+ * @param table Pointer to the table structure.
+ */
+void	monitor_routine(t_table *table);
+
+/**
+ * @brief Frees all resources and memory used in the simulation.
+ * @param table Pointer to the table structure.
+ */
+void	cleanup(t_table *table);
 
 #endif
