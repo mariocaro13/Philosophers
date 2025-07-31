@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:28:26 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/08/01 00:25:08 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:02:40 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	assign_table_data(t_table *table)
 	table->forks = ft_calloc(table->args.num_philos, sizeof(t_fork));
 	if (!table->philos || !table->forks)
 		return (ft_putstr_fd(COLOR_RED_BOLD"Error allocating memory.\n"
-				COLOR_RESET, 2), false);
+				COLOR_RESET, 2), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 

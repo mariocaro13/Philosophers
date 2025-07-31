@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:07:06 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/07/31 23:39:55 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/08/07 14:48:38 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,6 @@ void	sleep_philo(t_philo *philo);
 */
 
 bool	are_philos_full(t_table *table);
-bool	is_philo_dead_or_full(t_table *data, int i);
+bool	is_philo_dead_or_full(t_table *table, int i);
 
 #endif
