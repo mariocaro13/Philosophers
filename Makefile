@@ -5,21 +5,24 @@ RED = \033[0;31m
 RESET = \033[0m
 
 CC = cc
-SRC_DIR = src/
-UTILS_DIR = $(SRC_DIR)/utils/
+SRC_DIR = src
+UTILS_DIR = $(SRC_DIR)/utils
 INCLUDE_DIR = inc
 
 INCLUDE_DIRS = -I $(INCLUDE_DIR)
-FLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
 CFLAGS = $(INCLUDE_DIRS) $(FLAGS)
 
-SRCS = $(SRC_DIR)/init.c	\
-	   $(UTILS_DIR)/utils.c	\
-	   $(UTILS_DIR)/atol.c	\
-	   $(SRC_DIR)/parse.c	\
-	   $(SRC_DIR)/philo.c	\
-	   $(SRC_DIR)/cleanup.c	\
-	   $(SRC_DIR)/main.c	\
+SRCS =	$(UTILS_DIR)/philo_utils.c	\
+		$(UTILS_DIR)/utils.c		\
+		$(UTILS_DIR)/atol.c			\
+		$(SRC_DIR)/init.c			\
+		$(SRC_DIR)/parse.c			\
+		$(SRC_DIR)/philo.c			\
+		$(SRC_DIR)/simulation.c		\
+		$(SRC_DIR)/monitor.c		\
+		$(SRC_DIR)/cleanup.c		\
+		$(SRC_DIR)/main.c			\
 
 OBJS = $(SRCS:.c=.o)
 
