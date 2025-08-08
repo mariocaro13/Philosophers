@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:31:31 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2025/08/01 00:26:01 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2025/08/08 18:24:05 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	smart_sleep(long sleep_time)
 	start_time = ft_get_time();
 	while (ft_get_time() - start_time < sleep_time)
 	{
-		usleep(100);
+		usleep(sleep_time);
 	}
 }
 
@@ -78,7 +78,7 @@ void	*monitor(void *arg)
 		while (++i < table->args.num_philos)
 			if (is_philo_dead_or_full(table, i))
 				return (NULL);
-		usleep(100);
+		smart_sleep(5);	
 	}
 	return (NULL);
 }
